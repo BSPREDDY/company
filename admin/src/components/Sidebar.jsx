@@ -27,11 +27,11 @@ export const Sidebar = () => {
 
             {/* Sidebar */}
             <aside
-                className={`fixed left-0 top-0 h-screen w-64 bg-gray-900 text-white transition-transform duration-300 z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+                className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-r border-slate-700 text-white transition-transform duration-300 z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
                     }`}
             >
                 <div className="p-6">
-                    <h1 className="text-2xl font-bold mb-8">Bhavana Admin</h1>
+                    <h1 className="text-2xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Bhavana Admin</h1>
 
                     <nav className="space-y-2">
                         {menuItems.map(({ path, label, icon: Icon }) => (
@@ -39,8 +39,8 @@ export const Sidebar = () => {
                                 key={path}
                                 to={path}
                                 className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${isActive(path)
-                                    ? 'sidebar-active bg-blue-600'
-                                    : 'hover:bg-gray-800'
+                                    ? 'sidebar-active'
+                                    : 'text-slate-300 hover:bg-slate-700'
                                     }`}
                                 onClick={() => setIsOpen(false)}
                             >
@@ -51,14 +51,14 @@ export const Sidebar = () => {
                     </nav>
                 </div>
 
-                <div className="absolute bottom-6 left-6 right-6 border-t border-gray-700 pt-6">
-                    <div className="mb-4 text-sm text-gray-400">
-                        <p>{admin?.name}</p>
-                        <p className="text-xs">{admin?.email}</p>
+                <div className="absolute bottom-6 left-6 right-6 border-t border-slate-700 pt-6">
+                    <div className="mb-4 text-sm text-slate-300">
+                        <p className="font-semibold">{admin?.name}</p>
+                        <p className="text-xs text-slate-400">{admin?.email}</p>
                     </div>
                     <button
                         onClick={logout}
-                        className="w-full flex items-center space-x-2 px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                        className="admin-button w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
                     >
                         <FiLogOut size={20} />
                         <span>Logout</span>

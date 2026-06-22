@@ -6,6 +6,7 @@ import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
 import { Contacts } from './pages/Contacts';
 
+
 export default function App() {
   const { isLoading } = useAuth();
 

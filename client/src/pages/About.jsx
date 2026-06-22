@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import ScrollReveal from "../components/ScrollReveal";
+import Canvas3DWrapper from "../components/3D/Canvas3D";
+import { DataWorld3D } from "../components/3D/DataWorld3D";
 import "../../src/index.css";
 
 
@@ -8,42 +10,86 @@ export default function About() {
         <>
             <Helmet>
                 <title>
-                    About | Bhavana Technology's
+                    About | Bhavana Technology
                 </title>
 
                 <meta
                     name="description"
-                    content="Learn more about Bhavana Technology's."
+                    content="Learn more about Bhavana Technology's premium web development and testing solutions."
                 />
             </Helmet>
 
-            <section className="max-w-7xl mx-auto py-24 px-6">
-
-                <ScrollReveal>
-
-                    <h1 className="text-6xl font-bold mb-8">
-                        About Us
+            {/* Hero Section with 3D Background */}
+            <section className="relative h-96 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 -z-10">
+                    <Canvas3DWrapper>
+                        <DataWorld3D />
+                    </Canvas3DWrapper>
+                </div>
+                <div className="relative z-10 text-center px-6">
+                    <h1 className="text-5xl md:text-6xl font-bold text-white">
+                        About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Bhavana</span>
                     </h1>
+                </div>
+            </section>
 
-                    <p className="text-lg text-gray-300 leading-9">
+            {/* Main Content */}
+            <section className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-24 px-6">
+                <div className="max-w-7xl mx-auto">
 
-                        Bhavana Technology's delivers
-                        premium web development,
-                        automation testing,
-                        manual testing,
-                        SaaS MVP solutions,
-                        authentication systems,
-                        and enterprise dashboards.
+                    <ScrollReveal>
+                        <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 p-12 rounded-lg">
+                            <h2 className="text-4xl font-bold mb-6 text-white">
+                                Who We Are
+                            </h2>
 
-                        We focus on quality,
-                        scalability,
-                        security,
-                        and performance.
+                            <p className="text-lg text-blue-100 leading-relaxed mb-6">
+                                Bhavana Technology delivers premium web development, automation testing,
+                                manual testing, SaaS MVP solutions, authentication systems,
+                                and enterprise dashboards.
+                            </p>
 
-                    </p>
+                            <p className="text-lg text-blue-100 leading-relaxed">
+                                We focus on quality, scalability, security, and performance
+                                to help your business grow and succeed in the digital landscape.
+                            </p>
+                        </div>
+                    </ScrollReveal>
 
-                </ScrollReveal>
+                    {/* Core Values */}
+                    <div className="mt-16">
+                        <ScrollReveal>
+                            <h2 className="text-4xl font-bold mb-12 text-white text-center">
+                                Our Core Values
+                            </h2>
+                        </ScrollReveal>
 
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    title: "Quality First",
+                                    description: "We maintain the highest standards in every line of code and every test case."
+                                },
+                                {
+                                    title: "Customer Success",
+                                    description: "Your success is our priority. We build solutions that drive real business results."
+                                },
+                                {
+                                    title: "Innovation",
+                                    description: "We stay ahead of technology trends to deliver cutting-edge solutions."
+                                }
+                            ].map((value, idx) => (
+                                <ScrollReveal key={idx} delay={idx * 0.1}>
+                                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 p-8 rounded-lg hover:border-blue-400/60 transition-all">
+                                        <h3 className="text-2xl font-bold text-white mb-4">{value.title}</h3>
+                                        <p className="text-slate-300">{value.description}</p>
+                                    </div>
+                                </ScrollReveal>
+                            ))}
+                        </div>
+                    </div>
+
+                </div>
             </section>
         </>
     );

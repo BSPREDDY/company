@@ -33,44 +33,44 @@ export const Dashboard = () => {
             title: 'Total Contacts',
             value: stats.total,
             icon: FiMail,
-            bgColor: 'bg-blue-50',
-            textColor: 'text-blue-600',
-            borderColor: 'border-blue-200',
+            bgColor: 'bg-gradient-to-br from-blue-900/40 to-blue-800/40',
+            textColor: 'text-blue-300',
+            borderColor: 'border-blue-500/50',
         },
         {
             title: 'New',
             value: stats.new,
             icon: FiAlertCircle,
-            bgColor: 'bg-yellow-50',
-            textColor: 'text-yellow-600',
-            borderColor: 'border-yellow-200',
+            bgColor: 'bg-gradient-to-br from-yellow-900/40 to-yellow-800/40',
+            textColor: 'text-yellow-300',
+            borderColor: 'border-yellow-500/50',
         },
         {
             title: 'Read',
             value: stats.read,
             icon: FiEye,
-            bgColor: 'bg-purple-50',
-            textColor: 'text-purple-600',
-            borderColor: 'border-purple-200',
+            bgColor: 'bg-gradient-to-br from-purple-900/40 to-purple-800/40',
+            textColor: 'text-purple-300',
+            borderColor: 'border-purple-500/50',
         },
         {
             title: 'Replied',
             value: stats.replied,
             icon: FiCheck,
-            bgColor: 'bg-green-50',
-            textColor: 'text-green-600',
-            borderColor: 'border-green-200',
+            bgColor: 'bg-gradient-to-br from-green-900/40 to-green-800/40',
+            textColor: 'text-green-300',
+            borderColor: 'border-green-500/50',
         },
     ];
 
     return (
         <MainLayout>
             <div className="p-4 md:p-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
+                <h1 className="text-4xl font-bold text-white mb-8">Dashboard</h1>
 
                 {isLoading ? (
-                    <div className="flex items-center justify-center h-screen">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="flex items-center justify-center h-96">
+                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-yellow-400"></div>
                     </div>
                 ) : (
                     <>
@@ -80,40 +80,40 @@ export const Dashboard = () => {
                                 return (
                                     <div
                                         key={index}
-                                        className={`${card.bgColor} border-l-4 ${card.borderColor} rounded-lg p-6 shadow-sm`}
+                                        className={`admin-card border-l-4 ${card.borderColor} p-6 hover:border-l-8 transition-all`}
                                     >
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-gray-600 text-sm font-medium">
+                                                <p className="text-slate-300 text-sm font-medium">
                                                     {card.title}
                                                 </p>
                                                 <p className={`${card.textColor} text-3xl font-bold mt-2`}>
                                                     {card.value}
                                                 </p>
                                             </div>
-                                            <Icon className={`${card.textColor} text-4xl opacity-20`} />
+                                            <Icon className={`${card.textColor} text-4xl opacity-30`} />
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-md p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4">
+                        <div className="admin-card p-6">
+                            <h2 className="text-2xl font-bold text-white mb-6">
                                 Quick Stats
                             </h2>
-                            <div className="space-y-3">
-                                <div className="flex justify-between items-center pb-3 border-b">
-                                    <span className="text-gray-600">Total Contacts:</span>
-                                    <span className="font-bold text-gray-900">{stats.total}</span>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-600">
+                                    <span className="text-slate-300">Total Contacts:</span>
+                                    <span className="font-bold text-blue-300 text-lg">{stats.total}</span>
                                 </div>
-                                <div className="flex justify-between items-center pb-3 border-b">
-                                    <span className="text-gray-600">Spam Messages:</span>
-                                    <span className="font-bold text-red-600">{stats.spam}</span>
+                                <div className="flex justify-between items-center pb-4 border-b border-slate-600">
+                                    <span className="text-slate-300">Spam Messages:</span>
+                                    <span className="font-bold text-red-400 text-lg">{stats.spam}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">Response Rate:</span>
-                                    <span className="font-bold text-green-600">
+                                    <span className="text-slate-300">Response Rate:</span>
+                                    <span className="font-bold text-green-400 text-lg">
                                         {stats.total > 0
                                             ? (((stats.read + stats.replied) / stats.total) * 100).toFixed(2)
                                             : 0}

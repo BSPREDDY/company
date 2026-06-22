@@ -7,24 +7,42 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    @apply bg-gradient-to-br from-slate-900 to-slate-800;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
 
 @layer utilities {
     .sidebar-active {
-        @apply bg-blue-100 text-blue-600 border-r-4 border-blue-600;
+        @apply bg-blue-600 text-white border-r-4 border-yellow-400 font-semibold;
     }
 
     .table-row-hover {
-        @apply hover:bg-gray-50 transition-colors duration-200;
+        @apply hover:bg-slate-700 transition-colors duration-200;
+    }
+
+    .admin-card {
+        @apply bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg shadow-xl;
+    }
+
+    .admin-input {
+        @apply w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all;
+    }
+
+    .admin-button {
+        @apply px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl;
+    }
+
+    .admin-button-secondary {
+        @apply px-4 py-2 bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-600 transition-colors border border-slate-600;
     }
 }
