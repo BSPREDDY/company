@@ -1,7 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import ScrollReveal from "../components/ScrollReveal";
-import Canvas3DWrapper from "../components/3D/Canvas3D";
-import { DataWorld3D } from "../components/3D/DataWorld3D";
 import "../../src/index.css";
 
 
@@ -19,14 +17,9 @@ export default function About() {
                 />
             </Helmet>
 
-            {/* Hero Section with 3D Background */}
-            <section className="relative h-96 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 -z-10">
-                    <Canvas3DWrapper>
-                        <DataWorld3D />
-                    </Canvas3DWrapper>
-                </div>
-                <div className="relative z-10 text-center px-6">
+            {/* Hero Section with Gradient Background */}
+            <section className="relative h-96 flex items-center justify-center overflow-hidden bg-gradient-to-r from-blue-900 via-slate-900 to-purple-900">
+                <div className="text-center px-6">
                     <h1 className="text-5xl md:text-6xl font-bold text-white">
                         About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Bhavana</span>
                     </h1>

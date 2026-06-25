@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import { Suspense } from "react";
 import {
     FaGlobe,
     FaShoppingCart,
@@ -23,8 +22,6 @@ import {
 
 import ServiceCard from "../components/ServiceCard";
 import ScrollReveal from "../components/ScrollReveal";
-import Canvas3DWrapper from "../components/3D/Canvas3D";
-import { Background3D } from "../components/3D/Background3D";
 
 // Main Services
 const mainServices = [
@@ -146,14 +143,9 @@ export default function Services() {
                 <meta name="description" content="Web development, testing, and software solutions." />
             </Helmet>
 
-            {/* Hero with 3D Background */}
-            <section className="relative h-96 md:h-screen flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 -z-10">
-                    <Canvas3DWrapper>
-                        <Background3D />
-                    </Canvas3DWrapper>
-                </div>
-                <div className="relative z-10 text-center px-6">
+            {/* Hero Section with Gradient Background */}
+            <section className="relative min-h-96 md:min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-900 via-slate-900 to-slate-900 py-20">
+                <div className="text-center px-6">
                     <h1 className="text-5xl md:text-7xl font-bold mb-4 text-white">
                         Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Services</span>
                     </h1>

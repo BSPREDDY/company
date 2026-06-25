@@ -27,13 +27,12 @@ export const Sidebar = () => {
 
             {/* Sidebar */}
             <aside
-                className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-r-2 border-blue-500/20 text-white transition-transform duration-300 z-40 md:z-30 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-                    }`}
+                className={`h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-r-2 border-blue-500/20 text-white hidden md:flex flex-col`}
             >
-                <div className="p-6">
+                <div className="p-6 flex flex-col h-full">
                     <h1 className="text-2xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Bhavana Admin</h1>
 
-                    <nav className="space-y-2">
+                    <nav className="space-y-2 flex-1">
                         {menuItems.map(({ path, label, icon: Icon }) => (
                             <Link
                                 key={path}
@@ -49,20 +48,20 @@ export const Sidebar = () => {
                             </Link>
                         ))}
                     </nav>
-                </div>
 
-                <div className="absolute bottom-6 left-6 right-6 border-t border-slate-700 pt-6">
-                    <div className="mb-4 text-sm text-slate-300">
-                        <p className="font-semibold">{admin?.name}</p>
-                        <p className="text-xs text-slate-400">{admin?.email}</p>
+                    <div className="border-t border-slate-700 pt-6">
+                        <div className="mb-4 text-sm text-slate-300">
+                            <p className="font-semibold">{admin?.name}</p>
+                            <p className="text-xs text-slate-400">{admin?.email}</p>
+                        </div>
+                        <button
+                            onClick={logout}
+                            className="admin-button w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                        >
+                            <FiLogOut size={20} />
+                            <span>Logout</span>
+                        </button>
                     </div>
-                    <button
-                        onClick={logout}
-                        className="admin-button w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
-                    >
-                        <FiLogOut size={20} />
-                        <span>Logout</span>
-                    </button>
                 </div>
             </aside>
 

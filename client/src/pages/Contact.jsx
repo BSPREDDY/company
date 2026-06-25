@@ -1,7 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import ContactForm from "../components/ContactForm";
-import Canvas3DWrapper from "../components/3D/Canvas3D";
-import { Background3D } from "../components/3D/Background3D";
 
 export default function Contact() {
     return (
@@ -13,13 +11,8 @@ export default function Contact() {
                 <meta name="description" content="Get in touch with Bhavana Technology for your web development and testing needs." />
             </Helmet>
 
-            {/* 3D Background Layer */}
-            <div className="fixed inset-0 -z-10 h-screen overflow-hidden">
-                <Canvas3DWrapper>
-                    <Background3D className="h-full w-full" />
-                </Canvas3DWrapper>
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-900/50 to-slate-900/90"></div>
-            </div>
+            {/* Gradient Background (lightweight alternative to 3D) */}
+            <div className="fixed inset-0 -z-10 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"></div>
 
             <section
                 className="

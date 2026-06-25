@@ -79,7 +79,7 @@ const updateContactStatus = async (req, res) => {
         const contact = await Contact.findByIdAndUpdate(
             id,
             { status },
-            { new: true }
+            { returnDocument: 'after' }
         );
 
         if (!contact) {
@@ -111,7 +111,7 @@ const markAsSpam = async (req, res) => {
         const contact = await Contact.findByIdAndUpdate(
             id,
             { isSpam },
-            { new: true }
+            { returnDocument: 'after' }
         );
 
         if (!contact) {

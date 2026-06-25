@@ -201,14 +201,22 @@ const ParallaxLayers = () => {
 export const Background3D = ({ className = '' }) => {
     return (
         <div className={`relative w-full h-full ${className}`}>
-            <Canvas gl={{ antialias: true, alpha: true }}>
+            <Canvas
+                frameloop="demand"
+                dpr={[1, 1.5]}
+                gl={{
+                    antialias: false,
+                    powerPreference: "low-power",
+                    alpha: true
+                }}
+            >
                 <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={75} />
                 <Lights />
                 <ParallaxLayers />
                 <PulsingLogo />
                 <OrbittingIcons />
                 <ParticleSystem />
-                <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.3} />
+                <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
             </Canvas>
         </div>
     );

@@ -37,8 +37,8 @@ const OrbittingParticles = () => {
     const particlesRef = useRef([]);
 
     if (particlesRef.current.length === 0) {
-        for (let i = 0; i < 100; i++) {
-            const angle = (i / 100) * Math.PI * 2;
+        for (let i = 0; i < 40; i++) {
+            const angle = (i / 40) * Math.PI * 2;
             const radius = 8 + Math.random() * 3;
             particlesRef.current.push({
                 angle,
@@ -151,7 +151,15 @@ const Lights = () => {
 export const DataWorld3D = ({ className = '' }) => {
     return (
         <div className={`relative w-full h-full ${className}`}>
-            <Canvas gl={{ antialias: true, alpha: true }}>
+            <Canvas
+                frameloop="demand"
+                dpr={[1, 1.5]}
+                gl={{
+                    antialias: false,
+                    powerPreference: "low-power",
+                    alpha: true
+                }}
+            >
                 <PerspectiveCamera makeDefault position={[0, 0, 0]} fov={75} />
                 <Lights />
                 <Grid />
