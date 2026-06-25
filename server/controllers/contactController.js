@@ -79,7 +79,7 @@ const sendMessage = async (
                     to: email,
 
                     subject:
-                        "Thank You For Contacting Bhavana Technology",
+                        "Thank You For Contacting Bhavana Technology and software solutions",
 
                     html: `
           <div style="font-family:Arial; padding:20px;">
@@ -87,7 +87,7 @@ const sendMessage = async (
             <p>We have received your message.</p>
             <p>Our team will contact you shortly.</p>
             <br>
-            <b>Bhavana Technology</b>
+            <b>Bhavana Technology and software solutions</b>
           </div>
           `,
                 });
