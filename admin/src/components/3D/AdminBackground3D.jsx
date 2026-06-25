@@ -290,8 +290,11 @@ export function AdminBackground3D() {
             gl={{
                 alpha: true,
                 antialias: true,
-                pixelRatio: Math.min(window.devicePixelRatio, 2),
+                pixelRatio: typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1,
                 powerPreference: 'high-performance',
+                failIfMajorPerformanceCaveat: false,
+                stencil: false,
+                precision: 'mediump',
             }}
         >
             <AnimatedBackground />

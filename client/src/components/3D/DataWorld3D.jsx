@@ -7,17 +7,19 @@ import * as THREE from 'three';
 const FloatingDataSphere = () => {
     const meshRef = useRef();
 
-    useFrame(() => {
+    useFrame(({ clock }) => {
         if (meshRef.current) {
             meshRef.current.rotation.x += 0.001;
             meshRef.current.rotation.y += 0.002;
-            meshRef.current.position.y += Math.sin(Date.now() * 0.001) * 0.003;
+
+            meshRef.current.position.y =
+                Math.sin(clock.elapsedTime) * 0.3;
         }
     });
 
     return (
         <mesh ref={meshRef} position={[0, 0, -8]} scale={3}>
-            <sphereGeometry args={[1, 64, 64]} />
+            <sphereGeometry args={[1, 24, 24]} />
             <MeshDistortMaterial
                 color="#0099ff"
                 emissive="#0066ff"

@@ -143,7 +143,8 @@ import { useState, Suspense } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { AdminBackground3D } from '../components/3D/AdminBackground3D';
-import { FiUser, FiMail, FiLock, FiCheck } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser } from 'react-icons/fi';
+import styles from '../styles/auth.module.css';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -174,6 +175,11 @@ export const Register = () => {
             return;
         }
 
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return;
+        }
+
         setIsLoading(true);
 
         try {
@@ -187,99 +193,99 @@ export const Register = () => {
     };
 
     return (
-        <div className="relative min-h-screen w-full overflow-hidden">
+        <div className={styles.authContainer}>
             {/* 3D Background */}
-            <div className="absolute inset-0 -z-10 h-full w-full">
+            <div className={styles.backgroundLayer}>
                 <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800" />}>
                     <AdminBackground3D />
                 </Suspense>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/50 to-slate-900/80"></div>
+            <div className={styles.overlayGradient}></div>
 
             {/* Register Form */}
-            <div className="relative z-10 flex items-center justify-center min-h-screen p-4 py-8">
-                <div className="w-full max-w-md">
-                    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-md rounded-lg shadow-2xl p-8 border border-blue-500/20">
-                        <div className="text-center mb-8">
-                            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400 mb-2">
-                                Bhavana Admin
+            <div className={styles.formContainer}>
+                <div className={styles.formBox}>
+                    <div className={styles.formCard}>
+                        <div className={styles.headerSection}>
+                            <h1 className={styles.mainTitle}>
+                                Create Account
                             </h1>
-                            <p className="text-slate-300">Create your admin account</p>
+                            <p className={styles.subtitle}>Register as admin for Bhavana</p>
                         </div>
 
                         {error && (
-                            <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg mb-6">
+                            <div className={styles.errorBox}>
                                 {error}
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-semibold text-blue-300 mb-2">
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <div className={styles.formField}>
+                                <label className={styles.fieldLabel}>
                                     Full Name
                                 </label>
                                 <div className="relative">
-                                    <FiUser className="absolute left-3 top-3 text-blue-400" />
+                                    <FiUser className={styles.inputIcon} />
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                                        className={styles.fieldInput}
                                         placeholder="John Doe"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-semibold text-blue-300 mb-2">
+                            <div className={styles.formField}>
+                                <label className={styles.fieldLabel}>
                                     Email Address
                                 </label>
                                 <div className="relative">
-                                    <FiMail className="absolute left-3 top-3 text-blue-400" />
+                                    <FiMail className={styles.inputIcon} />
                                     <input
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                                        className={styles.fieldInput}
                                         placeholder="admin@example.com"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-semibold text-blue-300 mb-2">
+                            <div className={styles.formField}>
+                                <label className={styles.fieldLabel}>
                                     Password
                                 </label>
                                 <div className="relative">
-                                    <FiLock className="absolute left-3 top-3 text-blue-400" />
+                                    <FiLock className={styles.inputIcon} />
                                     <input
                                         type="password"
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                                        className={styles.fieldInput}
                                         placeholder="••••••••"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-semibold text-blue-300 mb-2">
+                            <div className={styles.formField}>
+                                <label className={styles.fieldLabel}>
                                     Confirm Password
                                 </label>
                                 <div className="relative">
-                                    <FiCheck className="absolute left-3 top-3 text-blue-400" />
+                                    <FiLock className={styles.inputIcon} />
                                     <input
                                         type="password"
                                         name="confirmPassword"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                                        className={styles.fieldInput}
                                         placeholder="••••••••"
                                         required
                                     />
@@ -289,15 +295,15 @@ export const Register = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 rounded-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                                className={styles.submitButton}
                             >
-                                {isLoading ? 'Creating account...' : 'Register'}
+                                {isLoading ? 'Creating Account...' : 'Register'}
                             </button>
                         </form>
 
-                        <p className="text-center text-slate-400 text-sm mt-6">
+                        <p className={styles.footerText}>
                             Already have an account?{' '}
-                            <Link to="/login" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                            <Link to="/login" className={styles.footerLink}>
                                 Login here
                             </Link>
                         </p>

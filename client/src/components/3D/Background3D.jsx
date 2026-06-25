@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -11,9 +11,11 @@ const PulsingLogo = () => {
     useFrame(() => {
         if (meshRef.current) {
             pulseRef.current += 0.01;
-            meshRef.current.scale.x = 1 + Math.sin(pulseRef.current) * 0.15;
-            meshRef.current.scale.y = 1 + Math.sin(pulseRef.current) * 0.15;
-            meshRef.current.rotation.z += 0.002;
+            meshRef.current.scale.x = 1 + Math.sin(pulseRef.current) * 0.2;
+            meshRef.current.scale.y = 1 + Math.sin(pulseRef.current) * 0.2;
+            meshRef.current.scale.z = 1 + Math.cos(pulseRef.current * 0.8) * 0.15;
+            meshRef.current.rotation.z += 0.003;
+            meshRef.current.rotation.y += 0.002;
         }
     });
 
@@ -23,8 +25,8 @@ const PulsingLogo = () => {
             <meshPhongMaterial
                 color="#0066ff"
                 emissive="#0099ff"
-                emissiveIntensity={0.4}
-                shininess={100}
+                emissiveIntensity={0.6}
+                shininess={120}
             />
         </mesh>
     );
@@ -91,40 +93,54 @@ const OrbittingIcons = () => {
     );
 };
 
-// Digital Rain Effect
-const DigitalRain = () => {
-    const groupRef = useRef();
-    const particles = useRef([]);
-
-    if (particles.current.length === 0) {
-        for (let i = 0; i < 50; i++) {
-            particles.current.push({
-                x: Math.random() * 30 - 15,
-                y: Math.random() * 20,
-                z: Math.random() * 10 - 15,
-                speed: Math.random() * 0.05 + 0.02,
-                scale: Math.random() * 0.03 + 0.01,
+// Enhanced Particle System (Optimized)
+const ParticleSystem = () => {
+    const particlesRef = useRef(null);
+    const particles = useMemo(() => {
+        const temp = [];
+        // Reduced from 150 to 80 particles for better performance
+        for (let i = 0; i < 80; i++) {
+            temp.push({
+                x: (Math.random() - 0.5) * 40,
+                y: Math.random() * 30 - 10,
+                z: (Math.random() - 0.5) * 30,
+                vx: (Math.random() - 0.5) * 0.015,
+                vy: Math.random() * 0.04 + 0.008,
+                vz: (Math.random() - 0.5) * 0.015,
+                size: Math.random() * 0.03 + 0.008,
+                life: Math.random(),
+                color: Math.random() > 0.5 ? '#0099ff' : '#00d4ff',
             });
         }
-    }
+        return temp;
+    }, []);
 
     useFrame(() => {
-        if (groupRef.current) {
-            particles.current.forEach((p) => {
-                p.y -= p.speed;
-                if (p.y < -10) {
-                    p.y = 20;
-                }
-            });
-        }
+        particles.forEach((p) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.z += p.vz;
+            p.life -= 0.001;
+
+            if (p.life < 0 || p.y > 20) {
+                p.x = (Math.random() - 0.5) * 40;
+                p.y = -10;
+                p.z = (Math.random() - 0.5) * 30;
+                p.life = 1;
+            }
+        });
     });
 
     return (
-        <group ref={groupRef}>
-            {particles.current.map((p, idx) => (
-                <mesh key={idx} position={[p.x, p.y, p.z]} scale={p.scale}>
+        <group ref={particlesRef}>
+            {particles.map((p, idx) => (
+                <mesh key={idx} position={[p.x, p.y, p.z]} scale={p.size}>
                     <sphereGeometry args={[1, 8, 8]} />
-                    <meshBasicMaterial color="#0099ff" transparent opacity={0.6} />
+                    <meshBasicMaterial
+                        color={p.color}
+                        transparent
+                        opacity={0.6 * p.life}
+                    />
                 </mesh>
             ))}
         </group>
@@ -143,6 +159,44 @@ const Lights = () => {
     );
 };
 
+// Parallax Background Layers
+const ParallaxLayers = () => {
+    const groupRef = useRef();
+
+    useFrame(({ mouse }) => {
+        if (groupRef.current) {
+            groupRef.current.rotation.x = mouse.y * 0.1;
+            groupRef.current.rotation.y = mouse.x * 0.1;
+        }
+    });
+
+    return (
+        <group ref={groupRef}>
+            {/* Far background layer */}
+            <mesh position={[0, 0, -20]} scale={[30, 30, 1]}>
+                <planeGeometry args={[1, 1, 10, 10]} />
+                <meshStandardMaterial
+                    color="#0d1b2a"
+                    wireframe
+                    opacity={0.1}
+                    transparent
+                />
+            </mesh>
+
+            {/* Mid background layer */}
+            <mesh position={[0, 0, -10]} scale={[25, 25, 1]} rotation={[0, 0.5, 0]}>
+                <planeGeometry args={[1, 1, 10, 10]} />
+                <meshStandardMaterial
+                    color="#0d1b2a"
+                    wireframe
+                    opacity={0.15}
+                    transparent
+                />
+            </mesh>
+        </group>
+    );
+};
+
 // Main Canvas Component
 export const Background3D = ({ className = '' }) => {
     return (
@@ -150,10 +204,11 @@ export const Background3D = ({ className = '' }) => {
             <Canvas gl={{ antialias: true, alpha: true }}>
                 <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={75} />
                 <Lights />
+                <ParallaxLayers />
                 <PulsingLogo />
                 <OrbittingIcons />
-                <DigitalRain />
-                <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+                <ParticleSystem />
+                <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.3} />
             </Canvas>
         </div>
     );
