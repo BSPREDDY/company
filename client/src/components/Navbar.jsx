@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-
+import logo from '../assets/logo.jpeg'
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -25,22 +25,13 @@ export default function Navbar() {
         flex
         justify-between
         items-center
-        p-5
+        pr-5
+        p-2
+        pl-2
         "
             >
-                <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg">
-                        BTSS
-                    </div>
-                    <h2
-                        className="
-              font-bold
-              text-xl
-              gradient-text
-              "
-                    >
-                        Bhavana Technology
-                    </h2>
+                <div className="">
+                    <img src={logo} alt="Logo" className="logo" height={40} width={60} className="rounded" />
                 </div>
 
                 {/* Desktop Menu */}

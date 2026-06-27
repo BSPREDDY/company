@@ -23,7 +23,7 @@ export default function Hero() {
     };
 
     return (
-        <section className="relative min-h-screen  items-center justify-center overflow-hidden pt-20 pb-20">
+        <section className="relative min-h-screen  items-center justify-center overflow-hidden pt-5 pb-20">
             {/* Subtle background elements */}
             <div className="absolute inset-0 opacity-30">
                 <div className="absolute top-20 left-10 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
@@ -39,7 +39,7 @@ export default function Hero() {
                 {/* Logo/Badge */}
                 <motion.div variants={itemVariants} className="mb-8">
                     <div className="inline-block bg-blue-500/20 border border-blue-500/50 rounded-full px-6 py-2">
-                        <span className="text-blue-300 text-sm font-semibold">Welcome to Bhavana</span>
+                        <span className="text-blue-300 text-sm font-semibold">Welcome to Bhavana technology and software solutions</span>
                     </div>
                 </motion.div>
 
@@ -84,7 +84,7 @@ export default function Hero() {
                     className="grid grid-cols-3 gap-6 md:gap-12 text-center"
                 >
                     <div>
-                        <p className="text-3xl md:text-4xl font-bold text-blue-400">50+</p>
+                        <p className="text-3xl md:text-4xl font-bold text-blue-400">1</p>
                         <p className="text-slate-400 mt-2">Projects Completed</p>
                     </div>
                     <div>
@@ -92,7 +92,7 @@ export default function Hero() {
                         <p className="text-slate-400 mt-2">Client Satisfaction</p>
                     </div>
                     <div>
-                        <p className="text-3xl md:text-4xl font-bold text-blue-400">5+</p>
+                        <p className="text-3xl md:text-4xl font-bold text-blue-400">2+</p>
                         <p className="text-slate-400 mt-2">Years of Experience</p>
                     </div>
                 </motion.div>

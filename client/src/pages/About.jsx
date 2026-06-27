@@ -21,7 +21,7 @@ export default function About() {
             <section className="relative h-96 flex items-center justify-center overflow-hidden">
                 <div className="text-center px-6">
                     <h1 className="text-5xl md:text-6xl font-bold text-white">
-                        About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Bhavana</span>
+                        About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">Bhavana technology and software solutions</span>
                     </h1>
                 </div>
             </section>
