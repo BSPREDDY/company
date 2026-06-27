@@ -15,15 +15,15 @@ import {
 import { MainLayout } from '../layouts/MainLayout';
 import { contactService } from '../services/contactService';
 import { motion } from 'framer-motion';
+import { Breadcrumb } from '../components/Breadcrumb';
+import { RouteTransition } from '../components/RouteTransition';
+import { useUrlSearch, useUrlPagination } from '../hooks/useUrlSync';
 
 export const Contacts = () => {
     const [contacts, setContacts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('');
     const [selectedContact, setSelectedContact] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [stats, setStats] = useState({ total: 0, new: 0, read: 0, replied: 0, spam: 0 });
     const [showStatusDropdown, setShowStatusDropdown] = useState(null);
@@ -32,19 +32,23 @@ export const Contacts = () => {
     const [actionDebounce, setActionDebounce] = useState({});
     const [statusOptions] = useState(['new', 'read', 'replied']);
 
+    // URL sync hooks for search, filter, and pagination
+    const { search, filter, setSearch, setFilter } = useUrlSearch();
+    const { page, limit, setPage, setLimit } = useUrlPagination(10);
+
     useEffect(() => {
         fetchContacts();
         fetchStats();
-    }, [currentPage, statusFilter, searchTerm]);
+    }, [page, filter, search]);
 
     const fetchContacts = async () => {
         setIsLoading(true);
         try {
             const params = {
-                page: currentPage,
-                limit: 10,
-                ...(statusFilter && { status: statusFilter }),
-                ...(searchTerm && { search: searchTerm }),
+                page,
+                limit,
+                ...(filter && { status: filter }),
+                ...(search && { search }),
             };
             const response = await contactService.getAllContacts(params);
             setContacts(response.contacts);
@@ -226,7 +230,11 @@ export const Contacts = () => {
 
     return (
         <MainLayout>
-            <div className="w-full space-y-8">
+            <RouteTransition>
+                <div className="w-full space-y-8">
+                    {/* Breadcrumb */}
+                    <Breadcrumb />
+
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -325,8 +333,8 @@ export const Contacts = () => {
                         <input
                             type="text"
                             placeholder="Search by name, email, or message..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             className="w-full pl-12 pr-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-colors"
                         />
                     </div>
@@ -338,7 +346,7 @@ export const Contacts = () => {
                             className="flex items-center gap-2 px-6 py-3 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 transition-all whitespace-nowrap"
                         >
                             <FiFilter size={18} />
-                            <span>{statusFilter ? statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1) : 'All Status'}</span>
+                            <span>{filter ? filter.charAt(0).toUpperCase() + filter.slice(1) : 'All Status'}</span>
                             <FiChevronDown size={16} className={`transition-transform ${showStatusDropdown ? 'rotate-180' : ''}`} />
                         </button>
 
@@ -352,9 +360,9 @@ export const Contacts = () => {
                             >
                                 <button
                                     onClick={() => {
-                                        setStatusFilter('');
+                                        setFilter('');
                                         setShowStatusDropdown(false);
-                                        setCurrentPage(1);
+                                        setPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors first:rounded-t-lg"
                                 >
@@ -362,9 +370,9 @@ export const Contacts = () => {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setStatusFilter('new');
+                                        setFilter('new');
                                         setShowStatusDropdown(false);
-                                        setCurrentPage(1);
+                                        setPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-yellow-300 transition-colors"
                                 >
@@ -372,9 +380,9 @@ export const Contacts = () => {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setStatusFilter('read');
+                                        setFilter('read');
                                         setShowStatusDropdown(false);
-                                        setCurrentPage(1);
+                                        setPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-blue-300 transition-colors"
                                 >
@@ -382,9 +390,9 @@ export const Contacts = () => {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setStatusFilter('replied');
+                                        setFilter('replied');
                                         setShowStatusDropdown(false);
-                                        setCurrentPage(1);
+                                        setPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-green-300 transition-colors last:rounded-b-lg"
                                 >
@@ -537,18 +545,18 @@ export const Contacts = () => {
                         className="flex justify-center items-center gap-4 mt-8"
                     >
                         <button
-                            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                            disabled={currentPage === 1}
+                            onClick={() => setPage(Math.max(1, page - 1))}
+                            disabled={page === 1}
                             className="px-6 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 hover:bg-slate-700 disabled:opacity-50 transition-all font-medium"
                         >
                             Previous
                         </button>
                         <span className="text-slate-300 font-semibold px-4 py-2.5 bg-slate-800/50 rounded-lg">
-                            Page {currentPage} of {totalPages}
+                            Page {page} of {totalPages}
                         </span>
                         <button
-                            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                            disabled={currentPage === totalPages}
+                            onClick={() => setPage(Math.min(totalPages, page + 1))}
+                            disabled={page === totalPages}
                             className="px-6 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 hover:bg-slate-700 disabled:opacity-50 transition-all font-medium"
                         >
                             Next
@@ -655,7 +663,8 @@ export const Contacts = () => {
                         </motion.div>
                     </motion.div>
                 )}
-            </div>
+                </div>
+            </RouteTransition>
         </MainLayout>
     );
 };

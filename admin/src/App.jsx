@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
 import { Contacts } from './pages/Contacts';
+import { ContactDetail } from './pages/ContactDetail';
 
 
 export default function App() {
@@ -40,6 +41,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Contacts />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/contacts/:id"
+            element={
+              <ProtectedRoute>
+                <ContactDetail />
               </ProtectedRoute>
             }
           />

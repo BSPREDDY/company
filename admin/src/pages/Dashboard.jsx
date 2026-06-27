@@ -3,6 +3,8 @@ import { FiMail, FiCheck, FiAlertCircle, FiEye, FiTrendingUp, FiTarget } from 'r
 import { MainLayout } from '../layouts/MainLayout';
 import { contactService } from '../services/contactService';
 import { motion } from 'framer-motion';
+import { Breadcrumb } from '../components/Breadcrumb';
+import { RouteTransition } from '../components/RouteTransition';
 
 export const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -38,17 +40,21 @@ export const Dashboard = () => {
 
     return (
         <MainLayout>
-            <div className="w-full space-y-8">
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="mb-8"
-                >
-                    <h1 className="text-5xl font-bold text-white mb-2">Dashboard</h1>
-                    <p className="text-slate-400 text-base">Welcome to Bhavana Technology Admin Panel</p>
-                </motion.div>
+            <RouteTransition>
+                <div className="w-full space-y-8">
+                    {/* Breadcrumb */}
+                    <Breadcrumb />
+
+                    {/* Header */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-8"
+                    >
+                        <h1 className="text-5xl font-bold text-white mb-2">Dashboard</h1>
+                        <p className="text-slate-400 text-base">Welcome to Bhavana Technology Admin Panel</p>
+                    </motion.div>
 
                 {isLoading ? (
                     <div className="flex items-center justify-center h-96">
@@ -233,7 +239,8 @@ export const Dashboard = () => {
                         </motion.div>
                     </>
                 )}
-            </div>
+                </div>
+            </RouteTransition>
         </MainLayout>
     );
 };
