@@ -71,8 +71,8 @@ export const Dashboard = () => {
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ duration: 0.3, delay: 0.15 + index * 0.05 }}
-                                        whileHover={{ scale: 1.05, y: -5 }}
-                                        className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg p-6 hover:border-blue-400/50 transition-all hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer"
+                                        whileHover={{ scale: 1.08, y: -8 }}
+                                        className="bg-gradient-to-br from-slate-800/90 to-slate-700/90 border border-blue-500/30 rounded-xl p-7 hover:border-blue-400/70 transition-all hover:shadow-2xl hover:shadow-blue-500/25 cursor-pointer"
                                     >
                                         <div className="flex items-start justify-between">
                                             <div>
@@ -108,8 +108,8 @@ export const Dashboard = () => {
                         >
                             {/* Quick Stats Card */}
                             <motion.div
-                                whileHover={{ y: -5 }}
-                                className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg p-8 hover:border-blue-400/50 transition-all hover:shadow-lg hover:shadow-blue-500/20"
+                                whileHover={{ y: -8 }}
+                                className="bg-gradient-to-br from-slate-800/90 to-slate-700/90 border border-blue-500/30 rounded-xl p-9 hover:border-blue-400/70 transition-all hover:shadow-2xl hover:shadow-blue-500/25"
                             >
                                 <div className="flex items-center gap-3 mb-8">
                                     <motion.div
@@ -158,8 +158,8 @@ export const Dashboard = () => {
 
                             {/* Status Breakdown Card */}
                             <motion.div
-                                whileHover={{ y: -5 }}
-                                className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg p-8 hover:border-blue-400/50 transition-all hover:shadow-lg hover:shadow-blue-500/20"
+                                whileHover={{ y: -8 }}
+                                className="bg-gradient-to-br from-slate-800/90 to-slate-700/90 border border-green-500/30 rounded-xl p-9 hover:border-green-400/70 transition-all hover:shadow-2xl hover:shadow-green-500/25"
                             >
                                 <div className="flex items-center gap-3 mb-8">
                                     <motion.div

@@ -66,8 +66,24 @@ export const Contacts = () => {
     };
 
     const handleStatusChange = async (contactId, newStatus) => {
+        // Validate inputs
+        if (!contactId || !newStatus) {
+            console.error('[v0] Invalid contact ID or status');
+            setActionMessage({ type: 'error', text: 'Invalid status selection' });
+            return;
+        }
+
         // Debounce check
         if (actionDebounce[`status-${contactId}`]) {
+            console.log('[v0] Debounced status change for:', contactId);
+            return;
+        }
+
+        // Validate status is one of the allowed values
+        const validStatuses = ['new', 'read', 'replied'];
+        if (!validStatuses.includes(newStatus)) {
+            console.error('[v0] Invalid status value:', newStatus);
+            setActionMessage({ type: 'error', text: 'Invalid status value' });
             return;
         }
 
@@ -76,22 +92,33 @@ export const Contacts = () => {
         setActionDebounce(prev => ({ ...prev, [`status-${contactId}`]: true }));
 
         try {
-            await contactService.updateContactStatus(contactId, newStatus);
-            setShowStatusDropdown(null);
-            setActionMessage({ type: 'success', text: 'Status updated successfully' });
+            console.log('[v0] Updating contact status:', { contactId, newStatus });
+            const response = await contactService.updateContactStatus(contactId, newStatus);
+            console.log('[v0] Status update response:', response);
 
-            // Refresh data
+            setShowStatusDropdown(null);
+            setActionMessage({ type: 'success', text: `Status updated to ${newStatus}` });
+
+            // Refresh data with a slight delay
             setTimeout(() => {
                 fetchContacts();
                 fetchStats();
             }, 300);
         } catch (error) {
-            console.error('[v0] Failed to update status:', error);
-            setActionMessage({ type: 'error', text: 'Failed to update status. Please try again.' });
+            console.error('[v0] Failed to update status:', {
+                contactId,
+                newStatus,
+                errorMessage: error.message,
+                errorResponse: error.response?.data
+            });
+            setActionMessage({
+                type: 'error',
+                text: error.response?.data?.message || 'Failed to update status. Please try again.'
+            });
         } finally {
             setLoadingActions(prev => ({ ...prev, [contactId]: null }));
 
-            // Remove debounce after 1 second
+            // Remove debounce after 1 second to allow retry
             setTimeout(() => {
                 setActionDebounce(prev => {
                     const newDebounce = { ...prev };
@@ -103,8 +130,16 @@ export const Contacts = () => {
     };
 
     const handleMarkSpam = async (contactId, isSpam) => {
+        // Validate inputs
+        if (!contactId || typeof isSpam !== 'boolean') {
+            console.error('[v0] Invalid contact ID or spam flag');
+            setActionMessage({ type: 'error', text: 'Invalid operation' });
+            return;
+        }
+
         // Debounce check
         if (actionDebounce[`spam-${contactId}`]) {
+            console.log('[v0] Debounced spam action for:', contactId);
             return;
         }
 
@@ -113,6 +148,7 @@ export const Contacts = () => {
         setActionDebounce(prev => ({ ...prev, [`spam-${contactId}`]: true }));
 
         try {
+            console.log('[v0] Marking as spam:', { contactId, isSpam });
             await contactService.markAsSpam(contactId, isSpam);
             setActionMessage({ type: 'success', text: `Marked as ${isSpam ? 'spam' : 'not spam'} successfully` });
 
@@ -209,49 +245,49 @@ export const Contacts = () => {
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
                 >
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg p-6 hover:border-blue-400/50 transition-all">
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 rounded-lg p-6 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-slate-400 text-xs uppercase tracking-wider font-medium">Total</p>
-                                <p className="text-white text-3xl font-bold mt-2">{stats.total}</p>
+                                <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Total Contacts</p>
+                                <p className="text-white text-4xl font-bold mt-3">{stats.total}</p>
                             </div>
-                            <FiMail className="text-3xl text-blue-400 opacity-20" />
+                            <FiMail className="text-4xl text-blue-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-yellow-500/20 rounded-lg p-6 hover:border-yellow-400/50 transition-all">
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-yellow-500/30 rounded-lg p-6 hover:border-yellow-400/50 hover:shadow-lg hover:shadow-yellow-500/20 transition-all cursor-pointer">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-slate-400 text-xs uppercase tracking-wider font-medium">New</p>
-                                <p className="text-yellow-300 text-3xl font-bold mt-2">{stats.new}</p>
+                                <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">New Messages</p>
+                                <p className="text-yellow-300 text-4xl font-bold mt-3">{stats.new}</p>
                             </div>
-                            <FiAlertTriangle className="text-3xl text-yellow-400 opacity-20" />
+                            <FiAlertTriangle className="text-4xl text-yellow-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-purple-500/20 rounded-lg p-6 hover:border-purple-400/50 transition-all">
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-purple-500/30 rounded-lg p-6 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all cursor-pointer">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-slate-400 text-xs uppercase tracking-wider font-medium">Read</p>
-                                <p className="text-purple-300 text-3xl font-bold mt-2">{stats.read}</p>
+                                <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Read Messages</p>
+                                <p className="text-purple-300 text-4xl font-bold mt-3">{stats.read}</p>
                             </div>
-                            <FiEye className="text-3xl text-purple-400 opacity-20" />
+                            <FiEye className="text-4xl text-purple-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-green-500/20 rounded-lg p-6 hover:border-green-400/50 transition-all">
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-green-500/30 rounded-lg p-6 hover:border-green-400/50 hover:shadow-lg hover:shadow-green-500/20 transition-all cursor-pointer">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-slate-400 text-xs uppercase tracking-wider font-medium">Replied</p>
-                                <p className="text-green-300 text-3xl font-bold mt-2">{stats.replied}</p>
+                                <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Replied Messages</p>
+                                <p className="text-green-300 text-4xl font-bold mt-3">{stats.replied}</p>
                             </div>
-                            <FiCheck className="text-3xl text-green-400 opacity-20" />
+                            <FiCheck className="text-4xl text-green-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-red-500/20 rounded-lg p-6 hover:border-red-400/50 transition-all">
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-red-500/30 rounded-lg p-6 hover:border-red-400/50 hover:shadow-lg hover:shadow-red-500/20 transition-all cursor-pointer">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-slate-400 text-xs uppercase tracking-wider font-medium">Spam</p>
-                                <p className="text-red-300 text-3xl font-bold mt-2">{stats.spam}</p>
+                                <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Spam Messages</p>
+                                <p className="text-red-300 text-4xl font-bold mt-3">{stats.spam}</p>
                             </div>
-                            <FiX className="text-3xl text-red-400 opacity-20" />
+                            <FiX className="text-4xl text-red-400 opacity-30" />
                         </div>
                     </div>
                 </motion.div>
@@ -364,7 +400,7 @@ export const Contacts = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
-                    className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg overflow-hidden"
+                    className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 transition-all"
                 >
                     {isLoading ? (
                         <div className="flex items-center justify-center h-96">
@@ -503,17 +539,17 @@ export const Contacts = () => {
                         <button
                             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                             disabled={currentPage === 1}
-                            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 disabled:opacity-50 transition-colors"
+                            className="px-6 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 hover:bg-slate-700 disabled:opacity-50 transition-all font-medium"
                         >
                             Previous
                         </button>
-                        <span className="text-slate-300">
+                        <span className="text-slate-300 font-semibold px-4 py-2.5 bg-slate-800/50 rounded-lg">
                             Page {currentPage} of {totalPages}
                         </span>
                         <button
                             onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                             disabled={currentPage === totalPages}
-                            className="px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 disabled:opacity-50 transition-colors"
+                            className="px-6 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 hover:bg-slate-700 disabled:opacity-50 transition-all font-medium"
                         >
                             Next
                         </button>
@@ -530,11 +566,11 @@ export const Contacts = () => {
                         className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
                     >
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 rounded-lg p-6 w-full max-w-md mx-auto"
+                            className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 rounded-lg p-6 w-full max-w-md mx-auto shadow-2xl"
                         >
                             {/* Modal Header */}
                             <div className="flex items-center justify-between mb-6">
@@ -611,7 +647,7 @@ export const Contacts = () => {
                             <div className="mt-8 flex gap-3">
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors font-medium"
+                                    className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition-all font-semibold shadow-lg hover:shadow-blue-500/30"
                                 >
                                     Close
                                 </button>
