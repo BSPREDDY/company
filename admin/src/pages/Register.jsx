@@ -57,17 +57,26 @@ export const Register = () => {
             navigate('/dashboard');
         } catch (err) {
             console.log('[v0] Register error:', err);
+            console.log('[v0] Error message:', err.message);
+            console.log('[v0] Error code:', err.code);
 
             let errorMsg = 'Registration failed. Please try again.';
 
-            if (err.response?.status === 400) {
+            // Handle network errors
+            if (!err.response) {
+                if (err.code === 'ECONNABORTED' || err.code === 'ECONNREFUSED') {
+                    errorMsg = 'Connection failed. Make sure the server is running on http://localhost:5000';
+                } else if (err.message === 'Network Error') {
+                    errorMsg = 'Network error. Please check your connection and ensure the server is running.';
+                } else {
+                    errorMsg = `Connection error: ${err.message}`;
+                }
+            } else if (err.response?.status === 400) {
                 errorMsg = err.response?.data?.message || 'Invalid registration data. Please check your inputs.';
-            } else if (err.response?.status === 409) {
+            } else if (err.response?.status === 409 || err.response?.status === 409) {
                 errorMsg = 'Email already registered. Please login or use a different email.';
             } else if (err.response?.status === 500) {
                 errorMsg = 'Server error. Please try again later.';
-            } else if (err.response?.status === 0 || err.code === 'ECONNABORTED') {
-                errorMsg = 'Connection failed. Please check your internet connection and try again.';
             } else if (err.response?.data?.message) {
                 errorMsg = err.response.data.message;
             }

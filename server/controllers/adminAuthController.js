@@ -179,7 +179,10 @@ const register = async (req, res) => {
     try {
         const { email, password, name, role } = req.body;
 
+        console.log('[v0] Registration attempt for email:', email);
+
         if (!email || !password || !name) {
+            console.log('[v0] Registration failed: Missing required fields');
             return res.status(400).json({
                 success: false,
                 message: "All fields are required",
@@ -187,6 +190,7 @@ const register = async (req, res) => {
         }
 
         if (password.length < 8) {
+            console.log('[v0] Registration failed: Password too short');
             return res.status(400).json({
                 success: false,
                 message: "Password must be at least 8 characters long",
@@ -195,6 +199,7 @@ const register = async (req, res) => {
 
         const existingAdmin = await Admin.findOne({ email });
         if (existingAdmin) {
+            console.log('[v0] Registration failed: Email already exists:', email);
             return res.status(400).json({
                 success: false,
                 message: "Admin already exists",
@@ -231,6 +236,8 @@ const register = async (req, res) => {
             status: "success",
         });
 
+        console.log('[v0] Registration successful for:', email);
+
         res.status(201).json({
             success: true,
             message: "Admin registered successfully",
@@ -244,10 +251,12 @@ const register = async (req, res) => {
             refreshToken,
         });
     } catch (error) {
-        console.log(error);
+        console.error('[v0] Registration error:', error.message);
+        console.error('[v0] Error stack:', error.stack);
         res.status(500).json({
             success: false,
             message: "Server Error",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
@@ -256,7 +265,10 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log('[v0] Login attempt for email:', email);
+
         if (!email || !password) {
+            console.log('[v0] Login failed: Missing email or password');
             return res.status(400).json({
                 success: false,
                 message: "Email and password are required",
@@ -325,6 +337,8 @@ const login = async (req, res) => {
             ipAddress: req.ip,
         });
 
+        console.log('[v0] Login successful for:', email);
+
         res.status(200).json({
             success: true,
             message: "Login successful",
@@ -338,10 +352,12 @@ const login = async (req, res) => {
             refreshToken,
         });
     } catch (error) {
-        console.log(error);
+        console.error('[v0] Login error:', error.message);
+        console.error('[v0] Error stack:', error.stack);
         res.status(500).json({
             success: false,
             message: "Server Error",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
