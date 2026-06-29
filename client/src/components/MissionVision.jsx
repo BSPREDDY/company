@@ -46,8 +46,7 @@ const MissionVision = () => {
                 className="max-w-6xl mx-auto"
                 variants={containerVariants}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
+                animate="visible"
             >
                 {/* Section Header */}
                 <motion.div className="text-center mb-16 md:mb-24" variants={itemVariants}>

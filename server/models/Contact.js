@@ -13,9 +13,25 @@ const ContactSchema =
                 required: true,
             },
 
+            phone: {
+                type: String,
+                required: false,
+            },
+
             message: {
                 type: String,
                 required: true,
+            },
+
+            status: {
+                type: String,
+                enum: ['new', 'read', 'replied'],
+                default: 'new',
+            },
+
+            isSpam: {
+                type: Boolean,
+                default: false,
             },
         },
         {

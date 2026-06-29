@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
     FiSearch,
     FiFilter,
@@ -17,16 +18,19 @@ import { contactService } from '../services/contactService';
 import { motion } from 'framer-motion';
 
 export const Contacts = () => {
+    const location = useLocation();
+    const initialFilter = location.state?.initialFilter ?? '';
     const [contacts, setContacts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('');
+    const [statusFilter, setStatusFilter] = useState(initialFilter);
     const [selectedContact, setSelectedContact] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [stats, setStats] = useState({ total: 0, new: 0, read: 0, replied: 0, spam: 0 });
-    const [showStatusDropdown, setShowStatusDropdown] = useState(null);
+    const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+    const [showContactStatusDropdown, setShowContactStatusDropdown] = useState(null);
     const [loadingActions, setLoadingActions] = useState({});
     const [actionMessage, setActionMessage] = useState({ type: '', text: '' });
     const [actionDebounce, setActionDebounce] = useState({});
@@ -43,9 +47,16 @@ export const Contacts = () => {
             const params = {
                 page: currentPage,
                 limit: 10,
-                ...(statusFilter && { status: statusFilter }),
                 ...(searchTerm && { search: searchTerm }),
             };
+            if (statusFilter === 'spam') {
+                params.isSpam = 'true';
+            } else {
+                params.isSpam = 'false';
+                if (statusFilter) {
+                    params.status = statusFilter;
+                }
+            }
             const response = await contactService.getAllContacts(params);
             setContacts(response.contacts);
             setTotalPages(response.totalPages);
@@ -96,7 +107,7 @@ export const Contacts = () => {
             const response = await contactService.updateContactStatus(contactId, newStatus);
             console.log('[v0] Status update response:', response);
 
-            setShowStatusDropdown(null);
+            setShowContactStatusDropdown(null);
             setActionMessage({ type: 'success', text: `Status updated to ${newStatus}` });
 
             // Refresh data with a slight delay
@@ -245,7 +256,10 @@ export const Contacts = () => {
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
                 >
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 rounded-lg p-6 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer">
+                    <div
+                        onClick={() => { setStatusFilter(''); setCurrentPage(1); }}
+                        className={`bg-gradient-to-br from-slate-800 to-slate-700 border rounded-lg p-6 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer ${statusFilter === '' ? 'border-blue-500 ring-2 ring-blue-500/30 shadow-lg shadow-blue-500/20' : 'border-blue-500/30'}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Total Contacts</p>
@@ -254,7 +268,10 @@ export const Contacts = () => {
                             <FiMail className="text-4xl text-blue-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-yellow-500/30 rounded-lg p-6 hover:border-yellow-400/50 hover:shadow-lg hover:shadow-yellow-500/20 transition-all cursor-pointer">
+                    <div
+                        onClick={() => { setStatusFilter('new'); setCurrentPage(1); }}
+                        className={`bg-gradient-to-br from-slate-800 to-slate-700 border rounded-lg p-6 hover:border-yellow-400/50 hover:shadow-lg hover:shadow-yellow-500/20 transition-all cursor-pointer ${statusFilter === 'new' ? 'border-yellow-500 ring-2 ring-yellow-500/30 shadow-lg shadow-yellow-500/20' : 'border-yellow-500/30'}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">New Messages</p>
@@ -263,7 +280,10 @@ export const Contacts = () => {
                             <FiAlertTriangle className="text-4xl text-yellow-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-purple-500/30 rounded-lg p-6 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all cursor-pointer">
+                    <div
+                        onClick={() => { setStatusFilter('read'); setCurrentPage(1); }}
+                        className={`bg-gradient-to-br from-slate-800 to-slate-700 border rounded-lg p-6 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all cursor-pointer ${statusFilter === 'read' ? 'border-purple-500 ring-2 ring-purple-500/30 shadow-lg shadow-purple-500/20' : 'border-purple-500/30'}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Read Messages</p>
@@ -272,7 +292,10 @@ export const Contacts = () => {
                             <FiEye className="text-4xl text-purple-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-green-500/30 rounded-lg p-6 hover:border-green-400/50 hover:shadow-lg hover:shadow-green-500/20 transition-all cursor-pointer">
+                    <div
+                        onClick={() => { setStatusFilter('replied'); setCurrentPage(1); }}
+                        className={`bg-gradient-to-br from-slate-800 to-slate-700 border rounded-lg p-6 hover:border-green-400/50 hover:shadow-lg hover:shadow-green-500/20 transition-all cursor-pointer ${statusFilter === 'replied' ? 'border-green-500 ring-2 ring-green-500/30 shadow-lg shadow-green-500/20' : 'border-green-500/30'}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Replied Messages</p>
@@ -281,7 +304,10 @@ export const Contacts = () => {
                             <FiCheck className="text-4xl text-green-400 opacity-30" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-red-500/30 rounded-lg p-6 hover:border-red-400/50 hover:shadow-lg hover:shadow-red-500/20 transition-all cursor-pointer">
+                    <div
+                        onClick={() => { setStatusFilter('spam'); setCurrentPage(1); }}
+                        className={`bg-gradient-to-br from-slate-800 to-slate-700 border rounded-lg p-6 hover:border-red-400/50 hover:shadow-lg hover:shadow-red-500/20 transition-all cursor-pointer ${statusFilter === 'spam' ? 'border-red-500 ring-2 ring-red-500/30 shadow-lg shadow-red-500/20' : 'border-red-500/30'}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold">Spam Messages</p>
@@ -334,15 +360,15 @@ export const Contacts = () => {
                     {/* Status Filter Dropdown */}
                     <div className="relative">
                         <button
-                            onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                            onClick={() => setShowFilterDropdown(!showFilterDropdown)}
                             className="flex items-center gap-2 px-6 py-3 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 hover:border-blue-500 transition-all whitespace-nowrap"
                         >
                             <FiFilter size={18} />
-                            <span>{statusFilter ? statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1) : 'All Status'}</span>
-                            <FiChevronDown size={16} className={`transition-transform ${showStatusDropdown ? 'rotate-180' : ''}`} />
+                            <span>{statusFilter ? (statusFilter === 'spam' ? 'Spam' : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)) : 'All Status'}</span>
+                            <FiChevronDown size={16} className={`transition-transform ${showFilterDropdown ? 'rotate-180' : ''}`} />
                         </button>
 
-                        {showStatusDropdown && (
+                        {showFilterDropdown && (
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -353,7 +379,7 @@ export const Contacts = () => {
                                 <button
                                     onClick={() => {
                                         setStatusFilter('');
-                                        setShowStatusDropdown(false);
+                                        setShowFilterDropdown(false);
                                         setCurrentPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors first:rounded-t-lg"
@@ -363,7 +389,7 @@ export const Contacts = () => {
                                 <button
                                     onClick={() => {
                                         setStatusFilter('new');
-                                        setShowStatusDropdown(false);
+                                        setShowFilterDropdown(false);
                                         setCurrentPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-yellow-300 transition-colors"
@@ -373,7 +399,7 @@ export const Contacts = () => {
                                 <button
                                     onClick={() => {
                                         setStatusFilter('read');
-                                        setShowStatusDropdown(false);
+                                        setShowFilterDropdown(false);
                                         setCurrentPage(1);
                                     }}
                                     className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-blue-300 transition-colors"
@@ -383,12 +409,22 @@ export const Contacts = () => {
                                 <button
                                     onClick={() => {
                                         setStatusFilter('replied');
-                                        setShowStatusDropdown(false);
+                                        setShowFilterDropdown(false);
                                         setCurrentPage(1);
                                     }}
-                                    className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-green-300 transition-colors last:rounded-b-lg"
+                                    className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-green-300 transition-colors"
                                 >
                                     Replied
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setStatusFilter('spam');
+                                        setShowFilterDropdown(false);
+                                        setCurrentPage(1);
+                                    }}
+                                    className="block w-full text-left px-4 py-3 text-slate-300 hover:bg-slate-700 hover:text-red-300 transition-colors last:rounded-b-lg"
+                                >
+                                    Spam
                                 </button>
                             </motion.div>
                         )}
@@ -441,9 +477,18 @@ export const Contacts = () => {
                                                     <motion.button
                                                         whileHover={{ scale: 1.1 }}
                                                         whileTap={{ scale: 0.95 }}
-                                                        onClick={() => {
+                                                        onClick={async () => {
                                                             setSelectedContact(contact);
                                                             setShowModal(true);
+                                                            if (contact.status === 'new') {
+                                                                try {
+                                                                    await contactService.updateContactStatus(contact._id, 'read');
+                                                                    setContacts(prev => prev.map(c => c._id === contact._id ? { ...c, status: 'read' } : c));
+                                                                    fetchStats();
+                                                                } catch (err) {
+                                                                    console.error('[v0] Auto mark as read failed:', err);
+                                                                }
+                                                            }
                                                         }}
                                                         className="p-2 text-blue-400 hover:bg-blue-500/20 rounded-lg transition-colors"
                                                         title="View details"
@@ -456,7 +501,7 @@ export const Contacts = () => {
                                                         <motion.button
                                                             whileHover={loadingActions[contact._id] !== 'status' ? { scale: 1.1 } : {}}
                                                             whileTap={loadingActions[contact._id] !== 'status' ? { scale: 0.95 } : {}}
-                                                            onClick={() => loadingActions[contact._id] !== 'status' && setShowStatusDropdown(showStatusDropdown === contact._id ? null : contact._id)}
+                                                            onClick={() => loadingActions[contact._id] !== 'status' && setShowContactStatusDropdown(showContactStatusDropdown === contact._id ? null : contact._id)}
                                                             disabled={loadingActions[contact._id] === 'status'}
                                                             className={`p-2 rounded-lg transition-colors ${loadingActions[contact._id] === 'status'
                                                                 ? 'text-yellow-400 bg-yellow-500/30 opacity-50 cursor-not-allowed'
@@ -467,7 +512,7 @@ export const Contacts = () => {
                                                             <FiCheck size={18} />
                                                         </motion.button>
 
-                                                        {showStatusDropdown === contact._id && (
+                                                        {showContactStatusDropdown === contact._id && (
                                                             <motion.div
                                                                 initial={{ opacity: 0, y: -10 }}
                                                                 animate={{ opacity: 1, y: 0 }}
@@ -602,6 +647,17 @@ export const Contacts = () => {
                                     </label>
                                     <p className="text-white break-all">{selectedContact.email}</p>
                                 </div>
+
+                                {/* Phone (Optional) */}
+                                {selectedContact.phone && (
+                                    <div>
+                                        <label className="block text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2">
+                                            <FiMessageSquare className="inline mr-2" />
+                                            Phone
+                                        </label>
+                                        <p className="text-white text-lg">{selectedContact.phone}</p>
+                                    </div>
+                                )}
 
                                 {/* Message */}
                                 <div>

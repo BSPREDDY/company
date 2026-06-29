@@ -37,7 +37,7 @@ export const Login = () => {
             // Handle network errors
             if (!err.response) {
                 if (err.code === 'ECONNABORTED' || err.code === 'ECONNREFUSED') {
-                    errorMsg = 'Connection failed. Make sure the server is running on http://localhost:5000';
+                    errorMsg = 'Connection failed. Make sure the server is running on https://bhavanatss-server.vercel.app';
                 } else if (err.message === 'Network Error') {
                     errorMsg = 'Network error. Please check your connection and ensure the server is running.';
                 } else {

@@ -1,28 +1,34 @@
 import Hero from "../components/Hero";
 import { Helmet } from "react-helmet-async";
 import { motion } from 'framer-motion';
-import { FaCode, FaFlask, FaRocket, FaUsers } from 'react-icons/fa';
+import { FaCode, FaFlask, FaRocket, FaUsers, FaSync } from 'react-icons/fa';
+
 export default function Home() {
     const services = [
         {
             icon: FaCode,
             title: 'Web Development',
-            desc: 'Modern, scalable web applications built with latest technologies'
+            desc: 'Modern, scalable web applications built with the latest technologies.'
         },
         {
             icon: FaFlask,
             title: 'Testing & QA',
-            desc: 'Comprehensive testing and quality assurance for robust applications'
+            desc: 'Comprehensive testing and quality assurance for robust, bug-free applications.'
+        },
+        {
+            icon: FaSync,
+            title: 'DevOps & Cloud',
+            desc: 'Automated CI/CD pipelines, containerization, and reliable cloud deployments.'
         },
         {
             icon: FaRocket,
             title: 'SaaS Development',
-            desc: 'Complete SaaS MVP development from concept to launch'
+            desc: 'Complete SaaS MVP development from concept to market launch.'
         },
         {
             icon: FaUsers,
             title: 'Team Augmentation',
-            desc: 'Dedicated development teams for your projects'
+            desc: 'Dedicated development teams to accelerate your software projects.'
         },
     ];
 
@@ -39,35 +45,37 @@ export default function Home() {
             <Hero />
 
             {/* Services Section */}
-            <section className="py-20">
-                <div className="max-w-6xl mx-auto px-6">
+            <section className="py-20 overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
                         className="text-center mb-16"
                     >
                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Our Services</h2>
                         <p className="text-xl text-slate-400">Comprehensive solutions tailored to your needs</p>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8">
                         {services.map((service, index) => {
                             const Icon = service.icon;
                             return (
                                 <motion.div
                                     key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                                    viewport={{ once: true }}
-                                    whileHover={{ y: -10 }}
-                                    className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-lg p-8 hover:border-blue-400/50 transition-all"
+                                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    transition={{ duration: 0.6, delay: 0.2 + index * 0.08, ease: 'easeOut' }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        y: -8,
+                                        boxShadow: "0px 12px 24px rgba(59, 130, 246, 0.15)"
+                                    }}
+                                    className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/20 rounded-xl p-6 md:p-8 hover:border-blue-400/50 transition-all duration-300"
                                 >
                                     <Icon className="text-4xl text-blue-400 mb-4" />
                                     <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
-                                    <p className="text-slate-400">{service.desc}</p>
+                                    <p className="text-slate-300 text-sm leading-relaxed">{service.desc}</p>
                                 </motion.div>
                             );
                         })}

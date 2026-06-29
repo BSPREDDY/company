@@ -17,18 +17,18 @@ export default function ScrollReveal({
         gsap.fromTo(
             element,
             {
-                y: 80,
+                y: 40,
                 opacity: 0,
             },
             {
                 y: 0,
                 opacity: 1,
-                duration: 1,
+                duration: 0.8,
                 delay,
                 ease: "power3.out",
                 scrollTrigger: {
                     trigger: element,
-                    start: "top 85%",
+                    start: "top 95%",
                 },
             }
         );

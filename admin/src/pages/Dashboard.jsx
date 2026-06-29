@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiMail, FiCheck, FiAlertCircle, FiEye, FiTrendingUp, FiTarget } from 'react-icons/fi';
 import { MainLayout } from '../layouts/MainLayout';
 import { contactService } from '../services/contactService';
 import { motion } from 'framer-motion';
 
 export const Dashboard = () => {
+    const navigate = useNavigate();
     const [stats, setStats] = useState({
         total: 0,
         new: 0,
@@ -30,10 +32,10 @@ export const Dashboard = () => {
     }, []);
 
     const statCards = [
-        { title: 'Total', value: stats.total, icon: FiMail, textColor: 'text-blue-300' },
-        { title: 'New', value: stats.new, icon: FiAlertCircle, textColor: 'text-yellow-300' },
-        { title: 'Read', value: stats.read, icon: FiEye, textColor: 'text-purple-300' },
-        { title: 'Replied', value: stats.replied, icon: FiCheck, textColor: 'text-green-300' },
+        { title: 'Total', value: stats.total, icon: FiMail, textColor: 'text-blue-300', filter: '' },
+        { title: 'New', value: stats.new, icon: FiAlertCircle, textColor: 'text-yellow-300', filter: 'new' },
+        { title: 'Read', value: stats.read, icon: FiEye, textColor: 'text-purple-300', filter: 'read' },
+        { title: 'Replied', value: stats.replied, icon: FiCheck, textColor: 'text-green-300', filter: 'replied' },
     ];
 
     return (
@@ -72,6 +74,7 @@ export const Dashboard = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ duration: 0.3, delay: 0.15 + index * 0.05 }}
                                         whileHover={{ scale: 1.08, y: -8 }}
+                                        onClick={() => navigate('/contacts', { state: { initialFilter: card.filter } })}
                                         className="bg-gradient-to-br from-slate-800/90 to-slate-700/90 border border-blue-500/30 rounded-xl p-7 hover:border-blue-400/70 transition-all hover:shadow-2xl hover:shadow-blue-500/25 cursor-pointer"
                                     >
                                         <div className="flex items-start justify-between">
@@ -125,7 +128,8 @@ export const Dashboard = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: 0.4 }}
-                                        className="flex justify-between items-center pb-4 border-b border-slate-600/50"
+                                        onClick={() => navigate('/contacts', { state: { initialFilter: '' } })}
+                                        className="flex justify-between items-center pb-4 border-b border-slate-600/50 cursor-pointer hover:opacity-85 transition-opacity"
                                     >
                                         <span className="text-slate-300 font-medium">Total Contacts</span>
                                         <span className="text-blue-300 text-xl font-bold">{stats.total}</span>
@@ -134,7 +138,8 @@ export const Dashboard = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: 0.45 }}
-                                        className="flex justify-between items-center pb-4 border-b border-slate-600/50"
+                                        onClick={() => navigate('/contacts', { state: { initialFilter: 'spam' } })}
+                                        className="flex justify-between items-center pb-4 border-b border-slate-600/50 cursor-pointer hover:opacity-85 transition-opacity"
                                     >
                                         <span className="text-slate-300 font-medium">Spam Messages</span>
                                         <span className="text-red-400 text-xl font-bold">{stats.spam}</span>
@@ -176,6 +181,8 @@ export const Dashboard = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: 0.4 }}
+                                        onClick={() => navigate('/contacts', { state: { initialFilter: 'new' } })}
+                                        className="cursor-pointer hover:opacity-85 transition-opacity"
                                     >
                                         <div className="flex justify-between mb-3">
                                             <span className="text-slate-300 font-medium">New</span>
@@ -195,6 +202,8 @@ export const Dashboard = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: 0.45 }}
+                                        onClick={() => navigate('/contacts', { state: { initialFilter: 'read' } })}
+                                        className="cursor-pointer hover:opacity-85 transition-opacity"
                                     >
                                         <div className="flex justify-between mb-3">
                                             <span className="text-slate-300 font-medium">Read</span>
@@ -214,6 +223,8 @@ export const Dashboard = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: 0.5 }}
+                                        onClick={() => navigate('/contacts', { state: { initialFilter: 'replied' } })}
+                                        className="cursor-pointer hover:opacity-85 transition-opacity"
                                     >
                                         <div className="flex justify-between mb-3">
                                             <span className="text-slate-300 font-medium">Replied</span>

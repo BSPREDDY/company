@@ -111,6 +111,40 @@ const testingServices = [
     }
 ];
 
+// DevOps & Cloud Services
+const devopsServices = [
+    {
+        title: "CI/CD Pipeline Setup",
+        icon: <FaSync className="text-3xl" />,
+        description: "Automate build, test, and deployment phases with robust integration pipelines."
+    },
+    {
+        title: "Infrastructure as Code (IaC)",
+        icon: <FaServer className="text-3xl" />,
+        description: "Manage and provision cloud environments reliably with Terraform and Ansible."
+    },
+    {
+        title: "Containerization & K8s",
+        icon: <FaGlobe className="text-3xl" />,
+        description: "Dockerize apps and orchestrate workloads using Kubernetes for high availability."
+    },
+    {
+        title: "Cloud Engineering & Migration",
+        icon: <FaServer className="text-3xl" />,
+        description: "Smooth cloud migration and management on AWS, GCP, and Microsoft Azure."
+    },
+    {
+        title: "Monitoring & Observability",
+        icon: <FaTachometerAlt className="text-3xl" />,
+        description: "Real-time metrics, logs, and alerts setup with Prometheus, Grafana, and ELK."
+    },
+    {
+        title: "DevSecOps & Compliance",
+        icon: <FaUserShield className="text-3xl" />,
+        description: "Integrate security checks and automated vulnerability scanning into deployment pipelines."
+    }
+];
+
 // Why Work With Us
 const whyChooseUs = [
     {
@@ -206,6 +240,34 @@ export default function Services() {
                                         <h3 className="text-lg font-bold text-white mb-1">{service.title}</h3>
                                         <p className="text-slate-300 text-sm">{service.description}</p>
                                     </div>
+                                </div>
+                            </ScrollReveal>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* DevOps & Cloud Services Section */}
+            <section className="py-20 px-6">
+                <div className="max-w-7xl mx-auto">
+                    <ScrollReveal>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white text-center">
+                            DevOps & Cloud Services
+                        </h2>
+                        <p className="text-center text-blue-200 mb-16 text-lg">
+                            Streamline your operations with modern deployment pipelines and cloud infrastructure
+                        </p>
+                    </ScrollReveal>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {devopsServices.map((service, index) => (
+                            <ScrollReveal key={index} delay={index * 0.08}>
+                                <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 p-8 rounded-lg hover:border-blue-400/60 transition-all group cursor-pointer">
+                                    <div className="text-blue-400 mb-4 group-hover:text-yellow-400 transition-colors">
+                                        {service.icon}
+                                    </div>
+                                    <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
+                                    <p className="text-slate-300">{service.description}</p>
                                 </div>
                             </ScrollReveal>
                         ))}

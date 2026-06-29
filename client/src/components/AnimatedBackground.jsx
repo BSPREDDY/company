@@ -447,78 +447,19 @@ export default function AnimatedBackground() {
             </motion.div>
 
             {/* Soft Gradient Accent 1 - Teal (Bottom-Left) */}
-            <motion.div
-                animate={{
-                    x: [0, 120, -60, 0],
-                    y: [0, -100, 50, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    duration: 25,
-                    ease: "easeInOut"
-                }}
-                className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-teal-500 opacity-10 rounded-full blur-[150px]"
-            />
+            <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-teal-500 opacity-10 rounded-full blur-[150px]" />
 
             {/* Soft Gradient Accent 2 - Navy (Top-Right) */}
-            <motion.div
-                animate={{
-                    x: [0, -150, 80, 0],
-                    y: [0, 120, -60, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    duration: 28,
-                    ease: "easeInOut",
-                    delay: 1
-                }}
-                className="absolute top-0 right-0 w-[700px] h-[700px] bg-blue-600 opacity-10 rounded-full blur-[150px]"
-            />
+            <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-blue-600 opacity-10 rounded-full blur-[150px]" />
 
             {/* Soft Gradient Accent 3 - Charcoal (Center) */}
-            <motion.div
-                animate={{
-                    x: [0, 100, -70, 0],
-                    y: [0, 70, -100, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    duration: 30,
-                    ease: "easeInOut",
-                    delay: 2
-                }}
-                className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-cyan-600 opacity-8 rounded-full blur-[140px] transform -translate-x-1/2 -translate-y-1/2"
-            />
+            <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-cyan-600 opacity-8 rounded-full blur-[140px] transform -translate-x-1/2 -translate-y-1/2" />
 
             {/* Soft Gradient Accent 4 - Purple (Bottom-Right) */}
-            <motion.div
-                animate={{
-                    x: [0, -100, 60, 0],
-                    y: [0, -80, 80, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    duration: 26,
-                    ease: "easeInOut",
-                    delay: 1.5
-                }}
-                className="absolute bottom-0 right-0 w-[650px] h-[650px] bg-purple-600 opacity-9 rounded-full blur-[150px]"
-            />
+            <div className="absolute bottom-0 right-0 w-[650px] h-[650px] bg-purple-600 opacity-9 rounded-full blur-[150px]" />
 
             {/* Soft Gradient Accent 5 - Emerald (Top-Left) */}
-            <motion.div
-                animate={{
-                    x: [0, 80, -80, 0],
-                    y: [0, 100, -50, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    duration: 27,
-                    ease: "easeInOut",
-                    delay: 2.5
-                }}
-                className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-600 opacity-8 rounded-full blur-[140px]"
-            />
+            <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-600 opacity-8 rounded-full blur-[140px]" />
 
             {/* Animated Grid Pattern - Subtle */}
             <motion.div

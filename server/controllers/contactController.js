@@ -13,6 +13,7 @@ const sendMessage = async (
         const {
             name,
             email,
+            phone,
             message,
         } = req.body;
 
@@ -32,6 +33,7 @@ const sendMessage = async (
             await Contact.create({
                 name,
                 email,
+                phone,
                 message,
             });
 
@@ -66,6 +68,7 @@ const sendMessage = async (
             <p><b>Name:</b> ${name}</p>
 
             <p><b>Email:</b> ${email}</p>
+            ${phone ? `<p><b>Phone:</b> ${phone}</p>` : ''}
 
             <p><b>Message:</b> ${message}</p>
           `,

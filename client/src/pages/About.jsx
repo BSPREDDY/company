@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import ScrollReveal from "../components/ScrollReveal";
+import MissionVision from "../components/MissionVision";
 import "../../src/index.css";
 
 
@@ -49,38 +50,7 @@ export default function About() {
                         </div>
                     </ScrollReveal>
 
-                    {/* Core Values */}
-                    <div className="mt-16">
-                        <ScrollReveal>
-                            <h2 className="text-4xl font-bold mb-12 text-white text-center">
-                                Our Core Values
-                            </h2>
-                        </ScrollReveal>
-
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {[
-                                {
-                                    title: "Quality First",
-                                    description: "We maintain the highest standards in every line of code and every test case."
-                                },
-                                {
-                                    title: "Customer Success",
-                                    description: "Your success is our priority. We build solutions that drive real business results."
-                                },
-                                {
-                                    title: "Innovation",
-                                    description: "We stay ahead of technology trends to deliver cutting-edge solutions."
-                                }
-                            ].map((value, idx) => (
-                                <ScrollReveal key={idx} delay={idx * 0.1}>
-                                    <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-blue-500/30 p-8 rounded-lg hover:border-blue-400/60 transition-all">
-                                        <h3 className="text-2xl font-bold text-white mb-4">{value.title}</h3>
-                                        <p className="text-slate-300">{value.description}</p>
-                                    </div>
-                                </ScrollReveal>
-                            ))}
-                        </div>
-                    </div>
+                    <MissionVision />
 
                 </div>
             </section>

@@ -31,7 +31,7 @@ export default function Navbar() {
         "
             >
                 <div className="">
-                    <img src={logo} alt="Logo" className="logo" height={40} width={60} className="rounded" />
+                    <img src={logo} alt="Logo" height={40} width={60} className="logo rounded" />
                 </div>
 
                 {/* Desktop Menu */}

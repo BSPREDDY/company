@@ -7,7 +7,13 @@ const getAllContacts = async (req, res) => {
         let query = {};
 
         if (status) query.status = status;
-        if (isSpam !== undefined) query.isSpam = isSpam === "true";
+        if (isSpam !== undefined) {
+            if (isSpam === "true") {
+                query.isSpam = true;
+            } else {
+                query.isSpam = { $ne: true };
+            }
+        }
 
         if (search) {
             query.$or = [
@@ -163,10 +169,10 @@ const deleteContact = async (req, res) => {
 
 const getStats = async (req, res) => {
     try {
-        const total = await Contact.countDocuments();
-        const newCount = await Contact.countDocuments({ status: "new" });
-        const readCount = await Contact.countDocuments({ status: "read" });
-        const repliedCount = await Contact.countDocuments({ status: "replied" });
+        const total = await Contact.countDocuments({ isSpam: { $ne: true } });
+        const newCount = await Contact.countDocuments({ status: "new", isSpam: { $ne: true } });
+        const readCount = await Contact.countDocuments({ status: "read", isSpam: { $ne: true } });
+        const repliedCount = await Contact.countDocuments({ status: "replied", isSpam: { $ne: true } });
         const spamCount = await Contact.countDocuments({ isSpam: true });
 
         res.status(200).json({

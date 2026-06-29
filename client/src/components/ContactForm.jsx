@@ -6,6 +6,7 @@ export default function ContactForm() {
     const [form, setForm] = useState({
         name: "",
         email: "",
+        phone: "",
         message: ""
     });
 
@@ -31,6 +32,15 @@ export default function ContactForm() {
             return;
         }
 
+        // Optional phone validation
+        if (form.phone.trim()) {
+            const phoneRegex = /^[+]?[0-9\s\-()]{7,20}$/;
+            if (!phoneRegex.test(form.phone)) {
+                setError("Please enter a valid phone number or leave it blank");
+                return;
+            }
+        }
+
         try {
             setLoading(true);
             const response = await axios.post(
@@ -43,6 +53,7 @@ export default function ContactForm() {
                 setForm({
                     name: "",
                     email: "",
+                    phone: "",
                     message: ""
                 });
                 setTimeout(() => setSuccess(false), 5000);
@@ -111,6 +122,28 @@ export default function ContactForm() {
                     setForm({
                         ...form,
                         email: e.target.value
+                    })
+                }
+                disabled={loading}
+            />
+
+            <input
+                type="tel"
+                className="
+        w-full
+        p-4
+        rounded-xl
+        glass
+        outline-none
+        focus:border-yellow-500
+        transition-all
+        "
+                placeholder="Phone Number (Optional)"
+                value={form.phone}
+                onChange={(e) =>
+                    setForm({
+                        ...form,
+                        phone: e.target.value
                     })
                 }
                 disabled={loading}
