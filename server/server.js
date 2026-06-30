@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const corsConfig = require('./config/cors');
 
 const app = express();
 
@@ -9,10 +10,7 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: [process.env.CLIENT_URL, process.env.ADMIN_URL],
-  credentials: true,
-}));
+app.use(cors(corsConfig));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
