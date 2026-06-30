@@ -10,11 +10,8 @@ connectDB();
 
 // Middleware
 app.use(cors({
-    origin: [
-        process.env.CLIENT_URL || "http://localhost:5173",
-        process.env.ADMIN_URL || "http://localhost:5174",
-    ],
-    credentials: true
+  origin: [process.env.CLIENT_URL, process.env.ADMIN_URL],
+  credentials: true,
 }));
 
 app.use(express.json());
